@@ -10,9 +10,9 @@
 
 body {
   color: white;
-  width: 100dvw;
+  width: 100vw;
   overflow-x: hidden;
-  height: 100dvh;
+  height: 100%;
   background: #000;
   border-color: #3b3b3b;
   user-select: none;
@@ -22,7 +22,7 @@ canvas {
   touch-action: none;
 }
 
-.scrim-max-width {
+.screen-max-width {
   margin-inline-start: auto;
   margin-inline-end: auto;
   position: relative;
@@ -83,10 +83,12 @@ canvas {
   }
 
   .control-btn {
+
     @apply ml-4 p-4 rounded-full bg-gray-300 backdrop-blur flex-center
   }
 
   .hero-title {
+    /* initially hide .hero-title then transition it */
     @apply text-center font-semibold text-3xl text-gray-100 opacity-0 max-md:mb-10
   }
 
