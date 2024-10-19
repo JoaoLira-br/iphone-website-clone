@@ -7,7 +7,6 @@ import { useEffect, useRef, useState } from "react";
 import { hightlightsSlides } from "../constants";
 import { pauseImg, playImg, replayImg } from "../utils";
 
-// todo: feature to choose between videos
 const VideoCarousel = () => {
   const videoRef = useRef([]);
   const videoSpanRef = useRef([]);
@@ -142,12 +141,11 @@ const VideoCarousel = () => {
         break;
 
       case "pause":
-       setVideo((pre) => ({...pre, isPlaying: !pre.isPlaying}))
+        setVideo((pre) => ({ ...pre, isPlaying: !pre.isPlaying }));
         break;
 
       case "play":
         setVideo((pre) => ({ ...pre, isPlaying: !pre.isPlaying }));
-    
         break;
 
       default:
