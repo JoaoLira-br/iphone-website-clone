@@ -6,6 +6,8 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  /* this UNCOMMENT FOR CSS DEBUGGING */
+  /* border: 1px solid red; */
 }
 
 body {

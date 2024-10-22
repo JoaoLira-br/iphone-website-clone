@@ -49,8 +49,10 @@ const VideoCarousel = () => {
   }, [isEnd, videoId]);
 
   useEffect(() => {
+
     let currentProgress = 0;
     let span = videoSpanRef.current;
+
 
     if (span[videoId]) {
       // animation to move the indicator
@@ -58,7 +60,7 @@ const VideoCarousel = () => {
         onUpdate: () => {
           // get the progress of the video
           const progress = Math.ceil(anim.progress() * 100);
-
+          console.log(`progress: ${progress}`);
           if (progress != currentProgress) {
             currentProgress = progress;
 
@@ -147,11 +149,51 @@ const VideoCarousel = () => {
       case "play":
         setVideo((pre) => ({ ...pre, isPlaying: !pre.isPlaying }));
         break;
+      // case "switch":
+      //   videoRef.current[video.videoId].load();
+      //   gsap.to(videoSpanRef.current[video.videoId], { width: "50%", duration: 0 });
+      //   gsap.to(videoDivRef.current[video.videoId], { width: "5%", duration: 0 });
+      //   setVideo((pre) => ({ ...pre, videoId: i }));
+
+      //   break;
 
       default:
         return video;
     }
   };
+
+  const handleSpanClick = (i) => {
+    // Reset all spans and stop animations
+    videoSpanRef.current.forEach((span, index) => {
+      gsap.set(span, { width: "0%", backgroundColor: "#afafaf" });
+    });
+  
+    // Update state to reflect the new active video
+    setVideo((pre) => ({
+      ...pre,
+      videoId: i,
+      startPlay: true,
+      isPlaying: true,
+    }));
+  
+    // Play the selected video and pause others
+    videoRef.current.forEach((video, index) => {
+      if (index === i) {
+        video.play();
+        // Start animation for the selected span
+        gsap.to(videoSpanRef.current[i], {
+          width: "100%",
+          duration: hightlightsSlides[i].videoDuration,
+          backgroundColor: "white",
+        });
+      } else {
+        video.pause();
+        video.currentTime = 0;
+         // Reset other videos
+      }
+    });
+  };
+  
 
   const handleLoadedMetaData = (i, e) => setLoadedData((pre) => [...pre, e]);
 
@@ -201,13 +243,25 @@ const VideoCarousel = () => {
         <div className="flex-center py-5 px-7 bg-gray-300 backdrop-blur rounded-full">
           {videoRef.current.map((_, i) => (
             <span
+              id={`anim__span${i}`}
               key={i}
               className="mx-2 w-3 h-3 bg-gray-200 rounded-full relative cursor-pointer"
-              ref={(el) => (videoDivRef.current[i] = el)}
+              ref={(el) => {
+                // console.log(el, i);
+                (videoDivRef.current[i] = el)
+
+              }}
+              onClick={() => handleSpanClick(i)} // Add click handler here
             >
               <span
                 className="absolute h-full w-full rounded-full"
-                ref={(el) => (videoSpanRef.current[i] = el)}
+                ref={(el) => {
+                  
+
+                  (videoSpanRef.current[i] = el)
+                  
+                }}
+                onClick={() => handleSpanClick(i)} // Add click handler here
               />
             </span>
           ))}
@@ -230,5 +284,4 @@ const VideoCarousel = () => {
     </>
   );
 };
-
 export default VideoCarousel;
