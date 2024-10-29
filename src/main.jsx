@@ -1,4 +1,4 @@
-import { StrictMode } from 'react'
+import React, { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
@@ -9,6 +9,11 @@ Sentry.init({
   dsn: "https://3cdc2642f5835ff7abb126dc52af12eb@o4508167823228928.ingest.us.sentry.io/4508167827816448",
   integrations: [
     Sentry.browserTracingIntegration(),
+    Sentry.metrics.metricsAggregatorIntegration(),
+    Sentry.reactRouterV6BrowserTracingIntegration({
+      useEffect: React.useEffect,
+
+    }),
     Sentry.replayIntegration(),
   ],
 
